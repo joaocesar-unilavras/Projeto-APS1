@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Colaborador</title>
+        <meta charset="utf-8">
+        
+        <script src="./scripts/jquery-3.5.1.js"></script>
+        <script src="./scripts/colaborador/cadastro.js"></script>
+        <script src="./scripts/colaborador/grid.js"></script>
+    </head>
+    
+    <body>
+        <form name="formulario">
+            <p>
+                <label>Nome:</label> 
+                <input id="nome" type="text">
+            </p>
+
+            <p>
+                <label>Salário (R$):</label> 
+                <input id="salario" type="number">
+            </p>
+
+            <p>
+                <label>Cargo:</label> 
+                <select id="cargo">
+                    <option value="0">Selecione o cargo...</option>
+                </select>
+            </p>
+    
+            <p>
+                <button id="salvar" type="button">Salvar</button>
+            </p>
+
+            <hr>
+
+            <p>
+                <label>Colaboradores Cadastrados</label> 
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOME</th>
+                            <th>SALARIO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="grid">
+
+                    </tbody>
+                </table>
+            </p>
+        </form>
+    </body>
+</html>
