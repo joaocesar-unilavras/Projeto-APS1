@@ -36,12 +36,21 @@
 
             <p>
                 <label>Colaboradores Cadastrados</label> 
+
+                <p>
+                    <label>Filtrar por Faixa de Salário:</label>
+                    <input type="number" id="valorInicial">
+                    <input type="number" id="valorFinal">
+                    <button type="button" id="filtrar">Filtrar</button>
+                </p>
+
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>NOME</th>
-                            <th>SALARIO</th>
+                            <th>CARGO</th>
+                            <th>SALÁRIO</th>
                         </tr>
                     </thead>
                     <tbody id="grid">

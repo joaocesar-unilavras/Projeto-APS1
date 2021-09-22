@@ -39,13 +39,28 @@ namespace projetoTeste.Models
                     .IsRequired()
                     .HasColumnName("nome")
                     .HasMaxLength(100);
+
+                entity.Property(e => e.SalarioMaximo).HasColumnName("salario_maximo");
+
+                entity.Property(e => e.SalarioMinimo).HasColumnName("salario_minimo");
+
+                entity.Property(e => e.Tipo)
+                    .IsRequired()
+                    .HasColumnName("tipo")
+                    .HasMaxLength(1)
+                    .IsFixedLength();
             });
 
             modelBuilder.Entity<Colaborador>(entity =>
             {
                 entity.ToTable("colaborador");
 
+                entity.HasIndex(e => e.IdCargo)
+                    .HasName("id_cargo");
+
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.IdCargo).HasColumnName("id_cargo");
 
                 entity.Property(e => e.Nome)
                     .IsRequired()
@@ -53,6 +68,12 @@ namespace projetoTeste.Models
                     .HasMaxLength(100);
 
                 entity.Property(e => e.Salario).HasColumnName("salario");
+
+                entity.HasOne(d => d.IdCargoNavigation)
+                    .WithMany(p => p.Colaborador)
+                    .HasForeignKey(d => d.IdCargo)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("colaborador_ibfk_1");
             });
 
             OnModelCreatingPartial(modelBuilder);

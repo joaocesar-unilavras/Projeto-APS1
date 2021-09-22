@@ -8,5 +8,8 @@ namespace projetoTeste.Models
         public int Id { get; set; }
         public string Nome { get; set; }
         public float Salario { get; set; }
+        public int IdCargo { get; set; }
+
+        public virtual Cargo IdCargoNavigation { get; set; }
     }
 }
