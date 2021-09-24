@@ -7,6 +7,7 @@ function listarCargo(){
         .done(function(resposta) { 
             for(i = 0; i < resposta.length; i++) {
                 $('#cargo').append($('<option></option>').val(resposta[i].id).html(resposta[i].nome));
+                $('#cargoFiltro').append($('<option></option>').val(resposta[i].id).html(resposta[i].nome));
             }
         })
         .fail(function(erro, mensagem, excecao) { 

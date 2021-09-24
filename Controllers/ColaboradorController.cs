@@ -21,9 +21,74 @@ namespace projetoTeste.Controllers
         }
         
         [HttpGet]
-        public List<Colaborador> Listar()
+        public List<Colaborador> Listar(string order)
         {
-            return contexto.Colaborador.Include(c => c.IdCargoNavigation).OrderBy(c => c.Nome).Select
+            if(order == "c"){
+                return contexto.Colaborador.Include(c => c.IdCargoNavigation).OrderBy(c => c.Id).Select
+                (
+                    c => new Colaborador 
+                    { 
+                        Id = c.Id,
+                        Nome = c.Nome,
+                        Salario = c.Salario,
+                        IdCargoNavigation = new Cargo 
+                        { 
+                            Id = c.IdCargoNavigation.Id, 
+                            Nome = c.IdCargoNavigation.Nome,
+                            Tipo = c.IdCargoNavigation.Tipo,
+                            SalarioMinimo = c.IdCargoNavigation.SalarioMinimo, 
+                            SalarioMaximo = c.IdCargoNavigation.SalarioMaximo 
+                        } 
+                    }
+                ).ToList();
+            }
+
+            else if(order == "d"){
+                return contexto.Colaborador.Include(c => c.IdCargoNavigation).OrderByDescending(c => c.Id).Select
+                (
+                    c => new Colaborador 
+                    { 
+                        Id = c.Id,
+                        Nome = c.Nome,
+                        Salario = c.Salario,
+                        IdCargoNavigation = new Cargo 
+                        { 
+                            Id = c.IdCargoNavigation.Id, 
+                            Nome = c.IdCargoNavigation.Nome,
+                            Tipo = c.IdCargoNavigation.Tipo,
+                            SalarioMinimo = c.IdCargoNavigation.SalarioMinimo, 
+                            SalarioMaximo = c.IdCargoNavigation.SalarioMaximo 
+                        } 
+                    }
+                ).ToList();
+            }
+
+            else{
+                return contexto.Colaborador.Include(c => c.IdCargoNavigation).OrderBy(c => c.Nome).Select
+                (
+                    c => new Colaborador 
+                    { 
+                        Id = c.Id,
+                        Nome = c.Nome,
+                        Salario = c.Salario,
+                        IdCargoNavigation = new Cargo 
+                        { 
+                            Id = c.IdCargoNavigation.Id, 
+                            Nome = c.IdCargoNavigation.Nome,
+                            Tipo = c.IdCargoNavigation.Tipo,
+                            SalarioMinimo = c.IdCargoNavigation.SalarioMinimo, 
+                            SalarioMaximo = c.IdCargoNavigation.SalarioMaximo 
+                        } 
+                    }
+                ).ToList();
+            }
+            
+        }
+
+        [HttpGet]
+        public List<Colaborador> ListarPorFaixa(double valorInicial, double valorFinal)
+        {
+            return contexto.Colaborador.Where(c => c.Salario >= valorInicial && c.Salario <= valorFinal).Select
             (
                 c => new Colaborador 
                 { 
@@ -36,15 +101,15 @@ namespace projetoTeste.Controllers
                         Nome = c.IdCargoNavigation.Nome,
                         Tipo = c.IdCargoNavigation.Tipo,
                         SalarioMinimo = c.IdCargoNavigation.SalarioMinimo, 
-                        SalarioMaximo = c.IdCargoNavigation.SalarioMaximo 
+                        SalarioMaximo = c.IdCargoNavigation.SalarioMaximo                     
                     } 
                 }).ToList();
         }
 
         [HttpGet]
-        public List<Colaborador> ListarPorFaixa(double valorInicial, double valorFinal)
+        public List<Colaborador> ListarPorCargo(string cargo)
         {
-            return contexto.Colaborador.Where(c => c.Salario >= valorInicial && c.Salario <= valorFinal).Select
+            return contexto.Colaborador.Where(c => c.IdCargoNavigation.Nome == cargo).Select
             (
                 c => new Colaborador 
                 { 

@@ -38,10 +38,24 @@
                 <label>Colaboradores Cadastrados</label> 
 
                 <p>
+                    <label>Ordenar por ID:</label> 
+                    <button id="orderCrescente" type="button">Crescente</button>
+                    <button id="orderDecrescente" type="button">Decrescente</button>
+                </p>
+
+                <p>
                     <label>Filtrar por Faixa de Salário:</label>
                     <input type="number" id="valorInicial">
                     <input type="number" id="valorFinal">
-                    <button type="button" id="filtrar">Filtrar</button>
+                    <button type="button" id="filtrarSalario">Filtrar</button>
+                    <button type="button" id="limparFiltro">Limpar</button>
+                </p>
+
+                <p>
+                    <label>Filtrar por Cargo:</label>
+                    <select id="cargoFiltro">
+                        <option value="0">Selecione o cargo...</option>
+                    </select>
                 </p>
 
                 <table>
