@@ -126,5 +126,14 @@ namespace projetoTeste.Controllers
                     } 
                 }).ToList();
         }
+
+        [HttpPost]
+        public string Cadastrar([FromBody]Colaborador dados)
+        {
+            contexto.Add(dados);
+            contexto.SaveChanges();
+            
+            return "Colaborador cadastrado com sucesso!";
+        }
     }
 }
