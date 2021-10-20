@@ -135,5 +135,39 @@ namespace projetoTeste.Controllers
             
             return "Colaborador cadastrado com sucesso!";
         }
+
+        [HttpDelete]
+        public string Excluir([FromBody]int id)
+        {
+            Colaborador dados = contexto.Colaborador.FirstOrDefault(p => p.Id == id);
+
+            if (dados == null)
+            {
+                return "Não foi encontrado Colaborador para o ID informado!";
+            }
+            else
+            {
+                contexto.Remove(dados);
+                contexto.SaveChanges();
+            
+                return "Colaborador excluído com sucesso!";
+            }
+        }
+
+        [HttpGet]
+        public Colaborador Visualizar(int id)
+        {
+            return contexto.Colaborador.Include(p => p.IdCargoNavigation)
+            .Select(c => new Colaborador 
+            { 
+                Id = c.Id,
+                Nome = c.Nome,
+                Salario = c.Salario,
+                IdCargoNavigation = new Cargo 
+                { 
+                    Nome = c.IdCargoNavigation.Nome 
+                } 
+            }).FirstOrDefault(p => p.Id == id);
+        }
     }
 }

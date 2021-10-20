@@ -19,7 +19,9 @@ function listarGrid(){
                 $('#' + dados.id).append($('<td></td>').html(dados.id));
                 $('#' + dados.id).append($('<td></td>').html(dados.nome));
                 $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html('R$ ' + dados.salario.toFixed(2).toString().replace('.', ',')));
+                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
+                $('#' + dados.id).append($('<td></td>').html('<button type=\"button\" onclick=\"visualizar('+ dados.id +')\">Visualizar</button> <button type=\"button\" onclick=\"excluir('+ dados.id +')\">Excluir</button>'));
+
             }
         })
         .fail(function(erro, mensagem, excecao) { 
@@ -39,7 +41,7 @@ function listarGridDecrescente(){
                 $('#' + dados.id).append($('<td></td>').html(dados.id));
                 $('#' + dados.id).append($('<td></td>').html(dados.nome));
                 $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html('R$ ' + dados.salario.toFixed(2).toString().replace('.', ',')));
+                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
             }
         })
         .fail(function(erro, mensagem, excecao) { 
@@ -59,7 +61,7 @@ function listarGridCrescente(){
                 $('#' + dados.id).append($('<td></td>').html(dados.id));
                 $('#' + dados.id).append($('<td></td>').html(dados.nome));
                 $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html('R$ ' + dados.salario.toFixed(2).toString().replace('.', ',')));
+                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
             }
         })
         .fail(function(erro, mensagem, excecao) { 
@@ -93,7 +95,7 @@ function filtrarCargo(){
                 $('#' + dados.id).append($('<td></td>').html(dados.id));
                 $('#' + dados.id).append($('<td></td>').html(dados.nome));
                 $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html('R$ ' + dados.salario.toFixed(2).toString().replace('.', ',')));
+                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
             }
         })
         .fail(function(erro, mensagem, excecao) { 
@@ -130,11 +132,48 @@ function filtrarSalario(){
                 $('#' + dados.id).append($('<td></td>').html(dados.id));
                 $('#' + dados.id).append($('<td></td>').html(dados.nome));
                 $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html('R$ ' + dados.salario.toFixed(2).toString().replace('.', ',')));
+                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
             }
         })
         .fail(function(erro, mensagem, excecao) { 
             alert(mensagem + ': ' + excecao);
         });
     }
+}
+
+function excluir(id) {
+    $.ajax({
+        type: 'DELETE',
+        url: 'https://localhost:5001/Colaborador/Excluir',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(id),
+        success: function(resposta) { 
+            listarGrid();
+            alert(resposta);
+        },
+        error: function(erro, mensagem, excecao) { 
+            alert(mensagem + ': ' + excecao);
+        }
+    });
+}
+
+function visualizar(id) {
+    $.get('https://localhost:5001/Colaborador/Visualizar?id='+id)
+        .done(function(resposta) { 
+            let visualizacao = resposta.id;
+            visualizacao += '\n';
+            visualizacao += resposta.nome;
+            visualizacao += '\n';
+            visualizacao += resposta.idCargoNavigation.nome;
+            visualizacao += '\n';
+            visualizacao += formatarSalario(resposta.salario);
+            alert(visualizacao);
+        })
+        .fail(function(erro, mensagem, excecao) { 
+            alert(mensagem + ': ' + excecao);
+        });
+}
+
+function formatarSalario(salario){
+    return 'R$ ' + salario.toFixed(2).toString().replace('.', ',');
 }
