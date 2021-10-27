@@ -21,19 +21,43 @@ function salvar(){
     var salario = $('#salario').val();
     var idCargo = $('#cargo').val();
 
+    var id;
+    var url;
+    var metodo;
+    if ($('#salvar').html() == 'Editar'){
+        id = $('#id').val();
+        metodo = 'PUT';
+        url = 'https://localhost:5001/Colaborador/Alterar';
+    }
+    else{
+        id = 0;
+        metodo = 'POST';
+        url = 'https://localhost:5001/Colaborador/Cadastrar';
+    }
+    console.log(id);
     var colaborador = {
+        id: parseInt(id),
         nome: nome,
         salario: parseFloat(salario),
         idCargo: parseInt(idCargo)
     };
 
+    
+
     $.ajax({
-        type: 'POST',
-        url: 'https://localhost:5001/Colaborador/Cadastrar',
+        type: metodo,
+        url: url,
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(colaborador),
         success: function(resposta) { 
             listarGrid();
+
+            $('#id').val(0);
+            $('#nome').val('');
+            $('#salario').val('');
+            $('#cargo').val(0);
+            $('#salvar').html('Salvar')
+
             alert(resposta);
         },
         error: function(erro, mensagem, excecao) { 

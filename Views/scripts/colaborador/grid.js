@@ -7,22 +7,25 @@ $(document).ready(function() {
     $('#orderDecrescente').click(listarGridDecrescente);
 });
 
+function carregarGrid(resposta){
+    $('#grid tr').remove();
+    for(i = 0; i < resposta.length; i++) {
+        let dados = resposta[i];
+        
+        $('#grid').append($('<tr></tr>').attr('id', dados.id));
+        
+        $('#' + dados.id).append($('<td></td>').html(dados.id));
+        $('#' + dados.id).append($('<td></td>').html(dados.nome));
+        $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
+        $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
+        $('#' + dados.id).append($('<td></td>').html('<button type=\"button\" onclick=\"visualizar('+ dados.id +')\">Visualizar</button> <button type=\"button\" onclick=\"editar('+ dados.id +')\">Editar</button> <button type=\"button\" onclick=\"excluir('+ dados.id +')\">Excluir</button>'));
+    }
+}
+
 function listarGrid(){
     $.get('https://localhost:5001/Colaborador/Listar')
         .done(function(resposta) { 
-            $('#grid tr').remove();
-            for(i = 0; i < resposta.length; i++) {
-                let dados = resposta[i];
-                
-                $('#grid').append($('<tr></tr>').attr('id', dados.id));
-                
-                $('#' + dados.id).append($('<td></td>').html(dados.id));
-                $('#' + dados.id).append($('<td></td>').html(dados.nome));
-                $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
-                $('#' + dados.id).append($('<td></td>').html('<button type=\"button\" onclick=\"visualizar('+ dados.id +')\">Visualizar</button> <button type=\"button\" onclick=\"excluir('+ dados.id +')\">Excluir</button>'));
-
-            }
+            carregarGrid(resposta);
         })
         .fail(function(erro, mensagem, excecao) { 
             alert(mensagem + ': ' + excecao);
@@ -32,17 +35,7 @@ function listarGrid(){
 function listarGridDecrescente(){
     $.get('https://localhost:5001/Colaborador/Listar?order=d')
         .done(function(resposta) { 
-            $('#grid tr').remove();
-            for(i = 0; i < resposta.length; i++) {
-                let dados = resposta[i];
-                
-                $('#grid').append($('<tr></tr>').attr('id', dados.id));
-                
-                $('#' + dados.id).append($('<td></td>').html(dados.id));
-                $('#' + dados.id).append($('<td></td>').html(dados.nome));
-                $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
-            }
+            carregarGrid(resposta);
         })
         .fail(function(erro, mensagem, excecao) { 
             alert(mensagem + ': ' + excecao);
@@ -52,17 +45,7 @@ function listarGridDecrescente(){
 function listarGridCrescente(){
     $.get('https://localhost:5001/Colaborador/Listar?order=c')
         .done(function(resposta) { 
-            $('#grid tr').remove();
-            for(i = 0; i < resposta.length; i++) {
-                let dados = resposta[i];
-                
-                $('#grid').append($('<tr></tr>').attr('id', dados.id));
-                
-                $('#' + dados.id).append($('<td></td>').html(dados.id));
-                $('#' + dados.id).append($('<td></td>').html(dados.nome));
-                $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
-            }
+            carregarGrid(resposta);
         })
         .fail(function(erro, mensagem, excecao) { 
             alert(mensagem + ': ' + excecao);
@@ -86,17 +69,7 @@ function filtrarCargo(){
     else{
         $.get('https://localhost:5001/Colaborador/ListarPorCargo?cargo='+textCargo)
         .done(function(resposta) { 
-            $('#grid tr').remove();
-            for(i = 0; i < resposta.length; i++) {
-                let dados = resposta[i];
-                
-                $('#grid').append($('<tr></tr>').attr('id', dados.id));
-                
-                $('#' + dados.id).append($('<td></td>').html(dados.id));
-                $('#' + dados.id).append($('<td></td>').html(dados.nome));
-                $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
-            }
+            carregarGrid(resposta);
         })
         .fail(function(erro, mensagem, excecao) { 
             alert(mensagem + ': ' + excecao);
@@ -123,17 +96,7 @@ function filtrarSalario(){
     if (!erro) {
         $.get('https://localhost:5001/Colaborador/ListarPorFaixa?valorInicial='+valorInicial+'&valorFinal='+valorFinal)
         .done(function(resposta) { 
-            $('#grid tr').remove();
-            for(i = 0; i < resposta.length; i++) {
-                let dados = resposta[i];
-                
-                $('#grid').append($('<tr></tr>').attr('id', dados.id));
-                
-                $('#' + dados.id).append($('<td></td>').html(dados.id));
-                $('#' + dados.id).append($('<td></td>').html(dados.nome));
-                $('#' + dados.id).append($('<td></td>').html(dados.idCargoNavigation.nome));
-                $('#' + dados.id).append($('<td></td>').html(formatarSalario(dados.salario)));
-            }
+            carregarGrid(resposta);
         })
         .fail(function(erro, mensagem, excecao) { 
             alert(mensagem + ': ' + excecao);
@@ -168,6 +131,20 @@ function visualizar(id) {
             visualizacao += '\n';
             visualizacao += formatarSalario(resposta.salario);
             alert(visualizacao);
+        })
+        .fail(function(erro, mensagem, excecao) { 
+            alert(mensagem + ': ' + excecao);
+        });
+}
+
+function editar(id){
+    $.get('https://localhost:5001/Colaborador/Visualizar?id='+id)
+        .done(function(resposta) { 
+            $('#id').val(resposta.id);
+            $('#nome').val(resposta.nome);
+            $('#salario').val(resposta.salario);
+            $('#cargo').val(resposta.idCargoNavigation.id);
+            $('#salvar').html('Editar');
         })
         .fail(function(erro, mensagem, excecao) { 
             alert(mensagem + ': ' + excecao);

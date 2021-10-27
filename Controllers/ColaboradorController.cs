@@ -165,9 +165,20 @@ namespace projetoTeste.Controllers
                 Salario = c.Salario,
                 IdCargoNavigation = new Cargo 
                 { 
+                    Id = c.IdCargoNavigation.Id, 
                     Nome = c.IdCargoNavigation.Nome 
                 } 
             }).FirstOrDefault(p => p.Id == id);
         }
+
+        [HttpPut]
+        public string Alterar([FromBody]Colaborador dados)
+        {
+            contexto.Update(dados);
+            contexto.SaveChanges();
+            
+            return "Colaborador alterado com sucesso!";
+        }
+
     }
 }
