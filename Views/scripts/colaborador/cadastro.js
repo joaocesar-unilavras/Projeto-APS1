@@ -34,7 +34,7 @@ function salvar(){
         metodo = 'POST';
         url = 'https://localhost:5001/Colaborador/Cadastrar';
     }
-    console.log(id);
+    
     var colaborador = {
         id: parseInt(id),
         nome: nome,

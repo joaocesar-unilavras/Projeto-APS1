@@ -48,3 +48,10 @@ UPDATE colaborador SET id_cargo = 4 WHERE nome = 'Radia Perlman';
 UPDATE colaborador SET id_cargo = 6 WHERE nome = 'Grace Hopper';
 
 ALTER TABLE colaborador CHANGE COLUMN id_cargo id_cargo INT NOT NULL;
+
+
+ALTER TABLE cargo ADD excluido BOOLEAN;
+
+UPDATE cargo SET excluido = false;
+
+ALTER TABLE cargo CHANGE COLUMN excluido excluido BOOLEAN NOT NULL;

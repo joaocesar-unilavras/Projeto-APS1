@@ -24,5 +24,65 @@ namespace projetoTeste.Controllers
         {
             return contexto.Cargo.ToList();
         }
+
+        //Listar apenas cargos de desenvolvedores.
+        [HttpGet]
+        public List<Cargo> ListarDev()
+        {
+            return contexto.Cargo.Where(c => c.Tipo == "D").ToList();
+        }
+
+        //Retornar o maior salário
+        [HttpGet]
+        public double MaiorSalario()
+        {
+            return contexto.Cargo.Max(c => c.SalarioMaximo);
+        }
+
+        [HttpDelete]
+        public string Excluir([FromBody]int id)
+        {
+            try
+            {
+                List<Colaborador> colaboradores = contexto.Colaborador.Where(p => p.IdCargo == id).ToList();
+
+                if (colaboradores.Count() == 0)
+                {
+                    Cargo dados = contexto.Cargo.FirstOrDefault(p => p.Id == id);
+
+                    contexto.Remove(dados);
+                    contexto.SaveChanges();
+            
+                    return "Cargo excluído com sucesso!";
+                }
+                else
+                {
+                    return "Cargo não pode ser excluído, existem colaboradores vinculados a ele!";
+                }
+            }
+            catch (System.Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        [HttpDelete]
+        public string ExcluirLogico([FromBody]int id)
+        {
+            try
+            {
+                Cargo dados = contexto.Cargo.FirstOrDefault(p => p.Id == id);
+
+                dados.Excluido = true;
+                contexto.Update(dados);
+                contexto.SaveChanges();
+        
+                return "Cargo excluído com sucesso!";
+            }
+            catch (System.Exception ex)
+            {
+                return ex.Message;
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace projetoTeste.Models
         public string Tipo { get; set; }
         public float SalarioMinimo { get; set; }
         public float SalarioMaximo { get; set; }
+        public bool Excluido { get; set; }
 
         public virtual ICollection<Colaborador> Colaborador { get; set; }
     }
